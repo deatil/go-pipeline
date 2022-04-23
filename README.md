@@ -6,13 +6,20 @@
 *  go 实现的通用管道
 
 
-### 使用方法
+### 下载安装
+
+~~~go
+go get -u github.com/deatil/go-pipeline
+~~~
+
+
+### 使用
 
 ~~~go
 package main
 
 import (
-    "github.com/deatil/lakego-doak/lakego/pipeline"
+    "github.com/deatil/go-pipeline/pipeline"
 )
 
 func main() {
