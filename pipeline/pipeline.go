@@ -152,7 +152,7 @@ func (this Pipeline) Carry() CarryFunc {
                 // 默认报错
                 default:
                     // 执行自定义函数
-                    if carry, ok := this.pipeCallMethod(pipe, this.Method, passable, newStack); ok {
+                    if carry, ok := this.pipeCallMethod(pipe, this.Method, []any{passable, newStack}); ok {
                         return this.HandleCarry(carry)
                     }
 
@@ -208,8 +208,7 @@ func (this Pipeline) WithExceptionCallback(callback ExceptionCallbackFunc) Pipel
 func (this Pipeline) pipeCallMethod(
     pipe any,
     method string,
-    passable any,
-    stack NextFunc,
+    params []any,
 ) (any, bool) {
     if method == "" {
         return nil, false
@@ -230,12 +229,16 @@ func (this Pipeline) pipeCallMethod(
     }
 
     // 添加参数
-    params := make([]reflect.Value, 0)
-    params = append(params, reflect.ValueOf(passable))
-    params = append(params, reflect.ValueOf(stack))
+    pipeParams := make([]reflect.Value, 0)
+
+    if len(params) > 0 {
+        for _, param := range params {
+            pipeParams = append(pipeParams, reflect.ValueOf(param))
+        }
+    }
 
     // 执行并获取结果
-    carrys := newPipe.Call(params)
+    carrys := newPipe.Call(pipeParams)
     if len(carrys) == 0 {
         return nil, false
     }
