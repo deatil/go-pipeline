@@ -84,13 +84,20 @@ func (this Pipeline) Through(pipes ...PipeItem) Pipeline {
 
 // 数组
 func (this Pipeline) ThroughArray(pipes []PipeItem) Pipeline {
-    this.Pipes = append(this.Pipes, pipes...)
+    this.Pipes = pipes
 
     return this
 }
 
 // 添加管道
 func (this Pipeline) Pipe(pipes ...PipeItem) Pipeline {
+    this.Pipes = append(this.Pipes, pipes...)
+
+    return this
+}
+
+// 添加管道
+func (this Pipeline) PipeArray(pipes []PipeItem) Pipeline {
     this.Pipes = append(this.Pipes, pipes...)
 
     return this
@@ -205,11 +212,7 @@ func (this Pipeline) WithExceptionCallback(callback ExceptionCallbackFunc) Pipel
 }
 
 // 执行自定义方法
-func (this Pipeline) pipeCallMethod(
-    pipe any,
-    method string,
-    params []any,
-) (any, bool) {
+func (this Pipeline) pipeCallMethod(pipe any, method string, params []any) (any, bool) {
     if method == "" {
         return nil, false
     }
